@@ -1,25 +1,62 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111018">
+  <title>Leonida Ledger — GTA VI Trophy Guide</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
-</header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
-<script type="module" src="app.js"></script>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Leonida Ledger home"><span class="brand-mark">LL</span><span>LEONIDA<span class="brand-light"> LEDGER</span><small>VICE NEON FIELD GUIDE</small></span></a>
+    <nav class="main-nav" aria-label="Guide views">
+      <button class="nav-link active" data-view="checklist">Trophy list <span>01</span></button>
+      <button class="nav-link" data-view="roadmap">Roadmap <span>02</span></button>
+      <button class="nav-link" data-view="missables">Missables <span>03</span></button>
+      <button class="nav-link" data-view="sources">Sources <span>04</span></button>
+    </nav>
+    <div class="top-status"><span class="offline-dot"></span> OFFLINE READY <span class="top-divider">/</span> PS5</div>
+  </header>
+
+  <main id="app">
+    <section class="hero-row">
+      <div><div class="eyebrow"><span class="eyebrow-line"></span> FIELD NOTES · LEONIDA, FL</div><h1>Make the city <em>yours.</em></h1><p class="hero-copy">A complete trophy route for the long road to legend.<br>Track locally. Play your way.</p></div>
+      <div class="hero-stamp"><span>PLATINUM<br>PROJECT</span><b>VI</b><small>55 TROPHIES · 01 GOAL</small></div>
+    </section>
+
+    <section class="dashboard" aria-label="Platinum dashboard">
+      <div class="dash-primary"><div class="dash-label">PLATINUM PROGRESS <span class="live-pill">LOCAL SAVE</span></div><div class="progress-line"><strong id="overall">0%</strong><div class="progress-track"><i id="progressFill"></i></div><span id="earnedCount">0 / 55</span></div><div class="dash-foot"><span>VICE CITY TO THE KEYS</span><span id="nextTrophy">NEXT UP · —</span></div></div>
+      <div class="dash-stat"><span class="dash-label">TROPHY SET</span><strong id="gradeCounts">01 <i>P</i>　02 <i>G</i>　06 <i>S</i>　46 <i>B</i></strong><small>55 TOTAL TROPHIES</small></div>
+      <div class="dash-stat alert-stat"><span class="dash-label">WATCH YOUR STEP</span><strong id="missableCount">06</strong><small>MISSABLE / CHOICE-SENSITIVE</small></div>
+    </section>
+
+    <section class="view-pane active" id="checklistView">
+      <div class="section-heading"><div><div class="eyebrow">01 / TROPHY INDEX</div><h2>Checklist <span id="resultCount">55 ENTRIES</span></h2></div><div class="spoiler-control"><span>HIDE STORY SPOILERS</span><label class="switch"><input id="spoilerToggle" type="checkbox"><span></span></label></div></div>
+      <div class="toolbar">
+        <label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Search trophy, task, or keyword" autocomplete="off"><kbd>⌘ K</kbd></label>
+        <label class="select-wrap"><span>GRADE</span><select id="gradeFilter"><option value="all">All grades</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
+        <label class="select-wrap"><span>STATUS</span><select id="statusFilter"><option value="all">All progress</option><option value="unearned">Not earned</option><option value="earned">Earned</option><option value="missable">Missables</option></select></label>
+      </div>
+      <div class="category-tabs" id="kindTabs" aria-label="Filter by category"></div>
+      <div class="list-head"><span>STATUS</span><span>NAME / REQUIREMENT</span><span>CLASS</span><span>GRADE</span><span></span></div>
+      <div id="trophyList" class="trophy-list" aria-live="polite"></div>
+      <p class="list-note">Your checklist stays on this device. Trophy descriptions remain as published; spoilers can be revealed row by row.</p>
+    </section>
+
+    <section class="view-pane" id="roadmapView"><div class="section-heading"><div><div class="eyebrow">02 / ROUTE PLANNING</div><h2>Five-stage roadmap <span>STORY → CLEANUP</span></h2></div><p class="view-intro">A low-friction order: secure story progress, note one-off conditions, then sweep Leonida.</p></div><div id="roadmapStages" class="roadmap-grid"></div></section>
+    <section class="view-pane" id="missablesView"><div class="section-heading"><div><div class="eyebrow">03 / DO NOT LEAVE BEHIND</div><h2>Missables watchlist <span>CHECK BEFORE ADVANCING</span></h2></div><p class="view-intro">A conservative watchlist based on the supplied trophy set and cited guides. Keep a manual save before major story choices.</p></div><div id="missableList" class="watchlist"></div></section>
+    <section class="view-pane" id="sourcesView"><div class="section-heading"><div><div class="eyebrow">04 / RESEARCH DESK</div><h2>Sources & backup <span>NO RUNTIME REQUESTS</span></h2></div><p class="view-intro">Links open only when you choose them. Export a portable progress file or restore one below.</p></div><div class="source-tools"><div class="source-card"><span class="eyebrow">YOUR SAVE FILE</span><h3>Progress belongs to you.</h3><p>Export your earned trophies as JSON, or import a previous backup. Nothing leaves this browser.</p><div class="backup-actions"><button class="button-primary" id="exportButton">↗ Export JSON</button><label class="button-quiet">＋ Import JSON<input id="importInput" type="file" accept="application/json"></label></div><p id="backupMessage" class="backup-message" aria-live="polite"></p></div><div class="source-card"><span class="eyebrow">BIBLIOGRAPHY</span><h3>Reference library</h3><div id="bibliography" class="bibliography"></div></div></div></section>
+  </main>
+
+  <aside class="drawer" id="guideDrawer" aria-hidden="true">
+    <div class="drawer-scrim" data-close="true"></div><section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+      <div class="drawer-top"><span class="eyebrow">FIELD GUIDE <span id="drawerId"></span></span><button class="icon-button" id="closeDrawer" aria-label="Close guide">×</button></div>
+      <div id="drawerContent"></div>
+      <div class="drawer-nav"><button id="prevGuide">← PREV</button><button id="nextGuide">NEXT →</button></div>
+    </section>
+  </aside>
+  <footer><span>LEONIDA LEDGER <i>///</i> INDEPENDENT FAN-MADE TRACKER</span><span>LOCAL PROGRESS ONLY <i>·</i> NO NETWORK ACCESS</span></footer>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
